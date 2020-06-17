@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Collapse Table Logs
-// @version      3.1.0
+// @version      1.0
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Collapse_Table_Logs
@@ -23,8 +23,7 @@
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @run-at       document-start
-// @updateURL    https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/Collapse_Table_Logs.js
-// @downloadURL  https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/Collapse_Table_Logs.js
+// @downloadURL  https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Collapse_Table_Logs.user.js
 // ==/UserScript==
 
 //Global Vars

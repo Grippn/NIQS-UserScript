@@ -4,7 +4,7 @@
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Collapse_Table_Logs
-// @description  NIQS_Collapse_Table_Logs allows you to collapse the log lines in the debug log of NIQS preview
+// @description  Collapse Table Logs allows you to collapse the log lines in the debug log of NIQS preview
 // @author       Nicholas Grippo
 // @license      MIT
 // @include      https://iqstudio.nuance-va.com/*

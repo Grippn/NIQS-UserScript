@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Freeze Tool
-// @version      3.1
+// @version      3.2
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Freeze_Tool

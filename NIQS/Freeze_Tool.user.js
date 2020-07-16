@@ -580,7 +580,7 @@ function getName(node) {
 		return lastNode.getElementsByTagName("A")[0].innerText.trim();
 	}
 	else {
-		lastNode.textContent.trim();
+		return lastNode.textContent.trim();
 	}
 
 }

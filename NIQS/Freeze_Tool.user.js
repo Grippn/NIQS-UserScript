@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Freeze Tool
-// @version      3.0
+// @version      3.1
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Freeze_Tool
@@ -15,6 +15,7 @@
 // @connect      niw-niqs.nuance.mobi
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
+// @grant        GM_setClipboard
 // @run-at       document-start
 // @downloadURL  https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Freeze_Tool.user.js
 // ==/UserScript==
@@ -37,8 +38,58 @@ function createBtn() {
 	return li;
 }
 
+
+
+function getText(){
+	let data = getRows();
+
+	let UQS = [];
+	for (let key in data) {
+		// console.log(`${key} --> ${data[key]}`);
+		if (key !== "CA" && key !== "OT" && key !== "KB") {
+			if (data[key]) {
+				console.log("Using this Key: " + key);
+
+				data[key].forEach((node) => {
+					let UQ_Name = getName(node);
+					if (UQ_Name) {
+						UQS.push(UQ_Name);
+					}
+					else {
+						console.log("Couldn't Find Node Name");
+					}
+				});
+			}
+			else {
+				console.log("Didn't find anything for that key " + key);
+			}
+		}
+	}
+
+	GM_setClipboard(UQS.join('\n'));
+
+}
+
+
+function createCopyBtn() {
+	const li = document.createElement("li");
+	const button = document.createElement("button");
+	button.id = 'copyTitles';
+	button.type = "button";
+	button.classList.add("outline");
+	button.innerText = "Copy UQs";
+	li.appendChild(button);
+
+	button.addEventListener("click", function () {
+		getText();
+	});
+
+	return li;
+}
+
 function addCopyBtn() {
 	let CopyArray = createBtn();
+	let CopyTextBtn = createCopyBtn();
 
 	try {
 		let controls = document.getElementsByClassName('controls1')[0];
@@ -47,6 +98,7 @@ function addCopyBtn() {
 
 		if (!document.getElementById("selector1")) {
 			controlsRightUL.insertBefore(CopyArray, controlsRightUL.firstElementChild);
+			controlsRightUL.insertBefore(CopyTextBtn, controlsRightUL.firstElementChild);
 			console.log("Added selector Btn");
 		}
 		else {

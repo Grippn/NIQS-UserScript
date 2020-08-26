@@ -51,7 +51,7 @@ function getText(){
 				console.log("Using this Key: " + key);
 
 				data[key].forEach((node) => {
-					let UQ_Name = getName(node);
+					let UQ_Name = getName(node, true);
 					if (UQ_Name) {
 						UQS.push(UQ_Name);
 					}
@@ -574,13 +574,72 @@ function getRows() {
 
 }
 
-function getName(node) {
+function getName(node, handbackAllInfo) {
 	let lastNode = node.lastElementChild;
-	if (lastNode.getElementsByTagName("A")[0]) {
-		return lastNode.getElementsByTagName("A")[0].innerText.trim();
+
+	if(lastNode.childNodes.length === 1){
+		let name;
+
+		let type;
+
+		let title;
+
+		if(lastNode.childNodes[0].tagName === "DIV"){
+			title = lastNode.childNodes[0].title;
+			name = lastNode.childNodes[0].childNodes[0].innerText;
+			type = "Delete";
+		}
+		else if(lastNode.childNodes[0].tagName === "SPAN"){
+			title = lastNode.childNodes[0].title;
+			name = lastNode.childNodes[0].innerText;
+			type = "Missing";
+		}
+		else if(lastNode.childNodes[0].tagName === "A"){
+			title = lastNode.childNodes[0].title;
+			name = lastNode.childNodes[0].innerText;
+			type = "Normal";
+		}
+		else{
+			console.log(`Unkown Tag:${lastNode.childNodes[0].tagName}`);
+			title = lastNode.title;
+			name = lastNode.innerText;
+			type = "Unkown";
+		}
+
+		if(title){
+			let titleArr = title.split(":");
+			if(titleArr && titleArr.length > 1){
+				let tempTitle = titleArr[titleArr.length - 1]
+				if(tempTitle){
+					if(tempTitle.trim()){
+						title = tempTitle.trim();
+					}
+				}
+
+			}
+		}
+		if(handbackAllInfo){
+			return `${name.trim()}\t${type.trim()}\t${title.trim()}\t${titleArr[0].trim()}`
+		}
+		else{
+			return name.trim();
+		}
 	}
-	else {
-		return lastNode.textContent.trim();
+	else{
+		console.log(`More than one child was found!`);
+
+		if (lastNode.getElementsByTagName("A")[0]) {
+			return lastNode.getElementsByTagName("A")[0].innerText.trim();
+		}
+		else {
+			if(lastNode.getElementsByTagName("SPAN")[0]){
+				let _span = lastNode.getElementsByTagName("SPAN")[0];
+				return `${_span.textContent.trim()}\t${_span.title}`;
+			}
+			else{
+				return `${lastNode.textContent.trim()}\t${lastNode.title}`;
+			}
+		}
 	}
 
 }

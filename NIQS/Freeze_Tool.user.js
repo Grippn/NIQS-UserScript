@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Freeze Tool
-// @version      3.2
+// @version      3.9
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Freeze_Tool
@@ -17,6 +17,7 @@
 // @grant        GM_getResourceText
 // @grant        GM_setClipboard
 // @run-at       document-start
+// @updateURL    https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Freeze_Tool.meta.js
 // @downloadURL  https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Freeze_Tool.user.js
 // ==/UserScript==
 
@@ -606,6 +607,8 @@ function getName(node, handbackAllInfo) {
 			type = "Unkown";
 		}
 
+    let titleArr;
+
 		if(title){
 			let titleArr = title.split(":");
 			if(titleArr && titleArr.length > 1){
@@ -619,8 +622,19 @@ function getName(node, handbackAllInfo) {
 			}
 		}
 		if(handbackAllInfo){
+
+      if(titleArr){
+        if(titleArr[0] &&  titleArr[0] && titleArr[0].trim()){
 			return `${name.trim()}\t${type.trim()}\t${title.trim()}\t${titleArr[0].trim()}`
 		}
+        else{
+            return `${name.trim()}\t${type.trim()}\t${title.trim()}\t${titleArr.join("|")}`
+        }
+      }
+      else{
+        	return `${name.trim()}\t${type.trim()}\t${title.trim()}\t`
+      }
+    }
 		else{
 			return name.trim();
 		}

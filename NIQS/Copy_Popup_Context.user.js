@@ -46,8 +46,16 @@ $(document).on({
 	"click": function () {
 		//$('#copyNode').tooltip({ items: '#copyNode', content: "Copied!"});
 		//$('#copyNode').tooltip("open");
-		const data = document.querySelector(".popupMessage.popupMessageAdditionalProps").textContent;
+		let data = document.querySelector(".popupMessage.popupMessageAdditionalProps").textContent;
 		console.log(data);
+		try{
+			data = JSON.parse(data);
+			data = JSON.stringify(data, null, '\t');
+		}
+		catch (error){
+			console.log(data);
+		}
+
 		GM_setClipboard(data);
 	}
 }, '#copyNode');

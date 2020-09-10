@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Collapse Table Logs
-// @version      1.0
+// @version      1.2
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Collapse_Table_Logs
@@ -422,6 +422,7 @@ function fixTableHeader(tableHead) {
 function addControls() {
 	const ControlContainer = document.createElement("div");
 
+  ControlContainer.id = "yolo";
 	ControlContainer.style['position'] = 'absolute';
 	ControlContainer.style['left'] = '400px';
 	ControlContainer.style['bottom'] = '10px';
@@ -467,8 +468,13 @@ function start() {
 		return document.querySelector(selector);
 	}
 
+
 	checkElement('.available').then((available) => {
-		checkElement('.tableHead tbody').then((tableHead) => {
+    if(document.getElementById("yolo")){
+       console.log("Already Loaded");
+    }
+    else{
+      checkElement('.tableHead tbody').then((tableHead) => {
 			fixTableHeader(tableHead);
 			addControls();
 			checkElement('.splitViewChatRightPaneData')
@@ -486,6 +492,8 @@ function start() {
 						});
 				});
 		});
+    }
+
 	});
 }
 

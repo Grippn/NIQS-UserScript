@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Copy Popup Context
-// @version      1.4
+// @version      1.5
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Copy_Popup_Context
@@ -46,16 +46,24 @@ $(document).on({
 	"click": function () {
 		//$('#copyNode').tooltip({ items: '#copyNode', content: "Copied!"});
 		//$('#copyNode').tooltip("open");
-		let data = document.querySelector(".popupMessage.popupMessageAdditionalProps").textContent;
-		console.log(data);
 		try{
-			let html = $.parseHTML( data ),
-			data = JSON.parse(html);
-			data = JSON.stringify(data, null, '\t');
-			GM_setClipboard(data);
+			let data = document.querySelector(".popupMessage.popupMessageAdditionalProps").textContent;
+			console.log(data);
+
+			let html = $.parseHTML( data );
+			console.log(html);
+
+			let parsedData = JSON.parse(html);
+			console.log(parsedData);
+
+			let stringData = JSON.stringify(parsedData, null, '\t');
+			console.log(stringData);
+
+			GM_setClipboard(stringData);
 		}
 		catch (error){
 			console.log(error);
+			let data = document.querySelector(".popupMessage.popupMessageAdditionalProps").textContent;
 			GM_setClipboard(data);
 		}
 

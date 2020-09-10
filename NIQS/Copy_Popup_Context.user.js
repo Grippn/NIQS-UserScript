@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Copy Popup Context
-// @version      1.1
+// @version      1.4
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Copy_Popup_Context
@@ -49,14 +49,16 @@ $(document).on({
 		let data = document.querySelector(".popupMessage.popupMessageAdditionalProps").textContent;
 		console.log(data);
 		try{
-			data = JSON.parse(data);
+			let html = $.parseHTML( data ),
+			data = JSON.parse(html);
 			data = JSON.stringify(data, null, '\t');
+			GM_setClipboard(data);
 		}
 		catch (error){
-			console.log(data);
+			console.log(error);
+			GM_setClipboard(data);
 		}
 
-		GM_setClipboard(data);
 	}
 }, '#copyNode');
 

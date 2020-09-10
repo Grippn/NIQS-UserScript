@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: Copy Popup Context
-// @version      1.0
+// @version      1.1
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    NIQS_Copy_Popup_Context

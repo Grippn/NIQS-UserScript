@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         My Test Script
-// @version      1.2
+// @name         NIQS: JSON Editor
+// @version      1.0
 // @minGMVer     1.14
 // @minFFVer     26
-// @description  Collapse Table Logs allows you to collapse the log lines in the debug log of NIQS preview
+// @description  Replaces the JSON dialogs in NIQS with a nice JSON editor
 // @author       Nicholas Grippo
 // @license      MIT
 // @include      https://iqstudio.nuance-va.com/*
@@ -13,13 +13,14 @@
 // @connect      iqstudio.nina-nuance.com
 // @connect      niw-niqs.nuance.mobi
 // @require      https://raw.githubusercontent.com/rafaelw/mutation-summary/master/src/mutation-summary.js
-// @require      http://127.0.0.1:8080/jsoneditor/dist/jsoneditor.js
-// @require      http://127.0.0.1:8080/he.js
-// @resource     IMPORTED_CSS http://127.0.0.1:8080/jsoneditor/dist/jsoneditor.css
-// @resource     JSONEDITOR http://127.0.0.1:8080/jsoneditor/dist/jsoneditor.js
+// @require      https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/jsoneditor/dist/jsoneditor.js
+// @resource     IMPORTED_CSS https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/jsoneditor/dist/jsoneditor.css
+// @resource     JSONEDITOR https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/jsoneditor/dist/jsoneditor.js
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // @inject-into  page
+// @updateURL    https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Collapse_Table_Logs.user.js
+// @downloadURL  https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Collapse_Table_Logs.user.js
 // ==/UserScript==
 
 
@@ -243,6 +244,12 @@ function start() {
 													callingType = getCallingType(rootNode);
 													callingNode = getCallingNode(rootNode);
 
+													if(!callingNode && moduleName){
+														callingNode = moduleName;
+													}
+													if(!callingType){
+														callingType = "Last Context or MetaData";
+													}
 													openNewEditor(jsonData, jsonType, moduleName, callingType, callingNode);
 
 												}

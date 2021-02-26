@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: JSON Editor
-// @version      1.0
+// @version      1.1
 // @minGMVer     1.14
 // @minFFVer     26
 // @description  Replaces the JSON dialogs in NIQS with a nice JSON editor
@@ -19,8 +19,8 @@
 // @grant        GM_getResourceText
 // @grant        GM_addStyle
 // @inject-into  page
-// @updateURL    https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Collapse_Table_Logs.user.js
-// @downloadURL  https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Collapse_Table_Logs.user.js
+// @updateURL    https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Context_Popup.user.js
+// @downloadURL  https://raw.githubusercontent.com/Grippn/NIQS-UserScript/master/NIQS/Context_Popup.user.js
 // ==/UserScript==
 
 
@@ -183,9 +183,6 @@ function start() {
 								.then((tableData) => {
 									checkElement(".gwt-PopupPanel").then((PopupPanel) => {
 										tableData.addEventListener("click", function (event) {
-											let id_of_clicked_element = event.target.getAttribute("id"); //
-											console.log(event.target);
-											console.log("button clicked has is of " + id_of_clicked_element);
 											try {
 												function getNodeParent(node, search) {
 													let parentNode = undefined;
@@ -239,18 +236,26 @@ function start() {
 												}
 
 												if (event.target && event.target.parentNode) {
-													let rootNode = getNodeParent(event.target, "TR");
-													moduleName = getModuleName(rootNode);
-													callingType = getCallingType(rootNode);
-													callingNode = getCallingNode(rootNode);
 
-													if(!callingNode && moduleName){
-														callingNode = moduleName;
+													if(event.target.textContent.includes("Test the request to Ninascript")
+													|| event.target.textContent.includes("View context") ||
+														event.target.textContent.includes("View metadata") ){
+														let rootNode = getNodeParent(event.target, "TR");
+														moduleName = getModuleName(rootNode);
+														callingType = getCallingType(rootNode);
+														callingNode = getCallingNode(rootNode);
+
+														if(!callingNode && moduleName){
+															callingNode = moduleName;
+														}
+														if(!callingType){
+															callingType = "Last Context or MetaData";
+														}
+
+														openNewEditor(jsonData, jsonType, moduleName, callingType, callingNode);
 													}
-													if(!callingType){
-														callingType = "Last Context or MetaData";
-													}
-													openNewEditor(jsonData, jsonType, moduleName, callingType, callingNode);
+
+
 
 												}
 											} catch (e) {

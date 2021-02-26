@@ -24,6 +24,15 @@
 
 
 function start() {
+
+	let editor;
+	let moduleName;
+	let callingType;
+	let callingNode;
+	let jsonData;
+	let jsonType;
+	let NewWindow;
+
 	function rafAsync() {
 		return new Promise(resolve => {
 			requestAnimationFrame(resolve); //faster than set time out
@@ -38,17 +47,9 @@ function start() {
 		return document.querySelector(selector);
 	}
 
-	let editor;
-	let moduleName;
-	let callingType;
-	let callingNode;
-	let jsonData;
-	let jsonType;
-	let NewWindow;
-
 	function openNewEditor(myJson, name, _moduleName, _callingType, _callingNode) {
 
-		if(!NewWindow){
+		if (!NewWindow) {
 			NewWindow = window.open("", "_blank", "width=600,height=700");
 			NewWindow.onunload = function () {
 				editor = undefined;
@@ -65,12 +66,6 @@ function start() {
 			let jsonEditorStyles = NewWindow.document.createElement("style");
 			jsonEditorStyles.innerHTML = IMPORTED_CSS;
 			head.appendChild(jsonEditorStyles);
-
-			// let css = GM_getResourceText("IMPORTED_CSS");
-			// let head = NewWindow.document.head || NewWindow.document.getElementsByTagName("head")[0];
-			// let style = document.createElement("style");
-			// style.appendChild(document.createTextNode(css));
-			// head.appendChild(style);
 
 			function injectThis() {
 				const colorPickerStyles = JSONEditor.VanillaPicker.StyleElement.cloneNode(true);
@@ -93,9 +88,7 @@ function start() {
 			let theScript = NewWindow.document.createElement("script");
 			theScript.innerHTML = "(" + injectThis.toString() + "());";
 			head.appendChild(theScript);
-
 		}
-
 
 		let head = NewWindow.document.head || NewWindow.document.getElementsByTagName("head")[0];
 		NewWindow.document.title = ` ${name} | ${_callingNode} | ${_callingType}`;
@@ -176,76 +169,6 @@ function start() {
 		}
 	}
 
-
-	// checkElement(".popupMessage").then((popupMessage) => {
-	// 	let data = popupMessage.textContent;
-	// 	let parsedJa = JSON.parse(data.replace(/("[^"]*")|\s/g, "$1"));
-	// 	console.log(parsedJa);
-	//
-	//
-	// 	openNewEditor(parsedJa);
-	//
-	//
-	//
-	//
-	// 	// function fireNewTab () {
-	// 	// 	var newTab = window.open("", "_blank", "width=400,height=400");
-	// 	// 	newTab.document.title = 'JSONEditor | New window'
-	// 	// 	newTab.addEventListener (
-	// 	// 		"load",
-	// 	// 		function () {
-	// 	// 			//--- Now process the popup/tab, as desired.
-	// 	// 			var destDoc = newTab.document;
-	// 	// 			destDoc.open ();
-	// 	// 			destDoc.write ('<html><head></head><body><ul><li>a</li><li>b</li><li>c</li></ul></body></html>');
-	// 	// 			destDoc.close ();
-	// 	// 		},
-	// 	// 		false
-	// 	// 	);
-	// 	// }
-	// 	//
-	// 	// addJS_Node ("ssdfsfsf", null, fireNewTab);
-	// 	//
-	// 	// function addJS_Node (text, s_URL, funcToRun, runOnLoad) {
-	// 	// 	var D                                   = document;
-	// 	// 	var scriptNode                          = D.createElement ('script');
-	// 	// 	if (runOnLoad) {
-	// 	// 		scriptNode.addEventListener ("load", runOnLoad, false);
-	// 	// 	}
-	// 	// 	scriptNode.type                         = "text/javascript";
-	// 	// 	if (text)       scriptNode.textContent  = text;
-	// 	// 	if (s_URL)      scriptNode.src          = s_URL;
-	// 	// 	if (funcToRun)  scriptNode.textContent  = '(' + funcToRun.toString() + ')()';
-	// 	//
-	// 	// 	var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
-	// 	// 	targ.appendChild (scriptNode);
-	// 	// }
-	//
-	//
-	//
-	// 	// $(popupMessage).replaceWith(`<div id="jsoneditor" style="width: 400px; height: 400px;"></div>`);
-	//
-	//
-	// 	// openNewEditor();
-	// 	// var container = document.getElementById("jsoneditor");
-	// 	// var options = {
-	// 	// 	modes: ['text', 'code', 'tree', 'form', 'view'],
-	// 	// 	mode: 'code'
-	// 	// };
-	// 	// var editor = new JSONEditor(container, options);
-	// 	//
-	// 	// var json = {
-	// 	// 	"Array": [1, 2, 3],
-	// 	// 	"Boolean": true,
-	// 	// 	"Null": null,
-	// 	// 	"Number": 123,
-	// 	// 	"Object": {"a": "b", "c": "d"},
-	// 	// 	"String": "Hello World"
-	// 	// };
-	// 	// editor.set(json);
-	// });
-
-
 	checkElement(".available").then((available) => {
 		if (document.getElementById("yolo")) {
 			console.log("Already Loaded");
@@ -258,18 +181,10 @@ function start() {
 							checkElement(".tableData")
 								.then((tableData) => {
 									checkElement(".gwt-PopupPanel").then((PopupPanel) => {
-
-										//listening for all click events on the document
 										tableData.addEventListener("click", function (event) {
-
-											//filtering for only events that happen on elements that contain the class
-											//view_btn.
-
 											let id_of_clicked_element = event.target.getAttribute("id"); //
 											console.log(event.target);
 											console.log("button clicked has is of " + id_of_clicked_element);
-
-
 											try {
 												function getNodeParent(node, search) {
 													let parentNode = undefined;
@@ -322,7 +237,6 @@ function start() {
 													}
 												}
 
-
 												if (event.target && event.target.parentNode) {
 													let rootNode = getNodeParent(event.target, "TR");
 													moduleName = getModuleName(rootNode);
@@ -331,38 +245,12 @@ function start() {
 
 													openNewEditor(jsonData, jsonType, moduleName, callingType, callingNode);
 
-
-													// if (rootNode && rootNode.childNodes && rootNode.childNodes[0]) {
-													// 	let eventName = parentNode.childNodes[0].textContent;
-													// 	console.log(`eventName: ${eventName}`);
-													//
-													//
-													// }
-													//
-													// let label = event.target.parentNode.querySelector(".gwt-Label");
-													// if (label) {
-													// 	let event = label.textContent;
-													// 	console.log(`Event: ${event}`);
-													// }
-													// else {
-													// 	let parentNode = getNodeParent(event.target, "TR");
-													// 	if (parentNode && parentNode.childNodes && parentNode.childNodes[0]) {
-													// 		let eventName = parentNode.childNodes[0].textContent;
-													// 		console.log(`eventName: ${eventName}`);
-													//
-													//
-													// 	}
-													// }
-
-
 												}
 											} catch (e) {
 												console.error(e);
 											}
 
-
 										});
-
 										let muteObserver = new MutationSummary({
 											callback: handleDiscographyChanges,
 											rootNode: document.body,
@@ -371,7 +259,6 @@ function start() {
 											}]
 										});
 
-
 									});
 								});
 						});
@@ -379,19 +266,12 @@ function start() {
 		}
 	});
 
-
 }
 
 (function () {
 	"use strict";
-
 	const my_css = GM_getResourceText("IMPORTED_CSS");
 	GM_addStyle(my_css);
-	GM_addStyle(`    #jsoneditor {
-      width: 500px;
-      height: 500px;
-    }`);
-
 
 	window.onhashchange = function () {
 		console.log(location.hash);

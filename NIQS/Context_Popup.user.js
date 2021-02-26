@@ -177,7 +177,7 @@ function start() {
 						}
 					}
 				} catch (e) {
-					console.log(e);
+					console.error(e);
 				}
 			}
 		}
@@ -211,7 +211,7 @@ function start() {
 													function getModuleName(node) {
 														if (node && node.childNodes && node.childNodes[0]) {
 															let eventName = node.childNodes[0].textContent;
-															console.log(`ModuleName: ${eventName}`);
+															// console.log(`ModuleName: ${eventName}`);
 															return eventName;
 														}
 														else {
@@ -225,7 +225,7 @@ function start() {
 															if (logs && logs.length > 0) {
 																const regex = /(?<=\$\(')(.*?)(?='\)\.on)/gm;
 																let _node = logs[0].title.match(regex);
-																console.log(`CallingNode: ${_node}`);
+																// console.log(`CallingNode: ${_node}`);
 																return _node;
 															}
 														}
@@ -238,7 +238,7 @@ function start() {
 														if (node && node.childNodes && node.childNodes[2]) {
 															let label = node.childNodes[2].querySelector(".gwt-Label");
 															if (label) {
-																console.log(`CallingType: ${label.textContent}`);
+																// console.log(`CallingType: ${label.textContent}`);
 																return label.textContent;
 															}
 														}

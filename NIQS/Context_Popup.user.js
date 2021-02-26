@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: JSON Editor
-// @version      1.1
+// @version      1.2
 // @minGMVer     1.14
 // @minFFVer     26
 // @description  Replaces the JSON dialogs in NIQS with a nice JSON editor
@@ -51,7 +51,17 @@ function start() {
 	function openNewEditor(myJson, name, _moduleName, _callingType, _callingNode) {
 
 		if (!NewWindow) {
-			NewWindow = window.open("", "_blank", "width=600,height=700");
+			// NewWindow = window.open("", "_blank", "width=600,height=700");
+
+			let w = 600;
+			let h = 700;
+			let left = (window.screen.width)-(w/2);
+			let top = (window.screen.height/2)-(h/2);
+
+			NewWindow = window.open("", "_blank", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=no, width='+w+', height='+h);
+			NewWindow.moveTo(left, top);
+
+
 			NewWindow.onunload = function () {
 				editor = undefined;
 				NewWindow = undefined;

@@ -41,7 +41,7 @@ function start() {
 	}
 
 	async function checkElement(selector) {
-		const querySelector = document.querySelector(selector);
+		// const querySelector = document.querySelector(selector);
 		while (document.querySelector(selector) === null) {
 			await rafAsync();
 		}
@@ -91,7 +91,7 @@ function start() {
 			head.appendChild(theScript);
 		}
 
-		let head = NewWindow.document.head || NewWindow.document.getElementsByTagName("head")[0];
+		let _head = NewWindow.document.head || NewWindow.document.getElementsByTagName("head")[0];
 		NewWindow.document.title = ` ${name} | ${_callingNode} | ${_callingType}`;
 		NewWindow.myCoolJSON = myJson;
 
@@ -101,7 +101,7 @@ function start() {
 
 		let updateScript = NewWindow.document.createElement("script");
 		updateScript.innerHTML = "(" + updateJSON.toString() + "());";
-		head.appendChild(updateScript);
+		_head.appendChild(updateScript);
 
 	}
 
@@ -215,9 +215,9 @@ function start() {
 														let logs = node.childNodes[2].querySelectorAll(".kquery-log-event-container");
 														if (logs && logs.length > 0) {
 															const regex = /(?<=\$\(')(.*?)(?='\)\.on)/gm;
-															let node = logs[0].title.match(regex);
-															console.log(`CallingNode: ${node}`);
-															return node;
+															let _node = logs[0].title.match(regex);
+															console.log(`CallingNode: ${_node}`);
+															return _node;
 														}
 													}
 													else {
@@ -258,7 +258,8 @@ function start() {
 											}
 
 										});
-										let muteObserver = new MutationSummary({
+
+										new MutationSummary({
 											callback: handleDiscographyChanges,
 											rootNode: document.body,
 											queries: [{

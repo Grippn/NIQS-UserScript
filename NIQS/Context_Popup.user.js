@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: JSON Editor
-// @version      1.3
+// @version      1.4
 // @minGMVer     1.14
 // @minFFVer     26
 // @description  Replaces the JSON dialogs in NIQS with a nice JSON editor
@@ -251,7 +251,7 @@ function start() {
 
 														if(event.target.textContent.includes("Test the request to Ninascript")
 															|| event.target.textContent.includes("View context") ||
-															event.target.textContent.includes("View metadata") ){
+															event.target.textContent.includes("View metadata") || event.target.textContent.includes("has been updated by Ninascript") ){
 															let rootNode = getNodeParent(event.target, "TR");
 															moduleName = getModuleName(rootNode);
 															callingType = getCallingType(rootNode);

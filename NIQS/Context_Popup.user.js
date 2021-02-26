@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: JSON Editor
-// @version      1.4
+// @version      1.5
 // @minGMVer     1.14
 // @minFFVer     26
 // @description  Replaces the JSON dialogs in NIQS with a nice JSON editor

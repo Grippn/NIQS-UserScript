@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         NIQS: JSON Editor
-// @version      1.5
+// @version      1.6
 // @minGMVer     1.14
 // @minFFVer     26
 // @description  Replaces the JSON dialogs in NIQS with a nice JSON editor
@@ -35,7 +35,7 @@ let NewWindow;
 
 function start() {
 
-	if(!loaded){
+	if (!loaded) {
 		function rafAsync() {
 			return new Promise(resolve => {
 				requestAnimationFrame(resolve); //faster than set time out
@@ -57,10 +57,10 @@ function start() {
 
 				let w = 600;
 				let h = 700;
-				let left = (window.screen.width)-(w/2);
-				let top = (window.screen.height/2)-(h/2);
+				let left = (window.screen.width) - (w / 2);
+				let top = (window.screen.height / 2) - (h / 2);
 
-				NewWindow = window.open("", "_blank", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=no, width='+w+', height='+h);
+				NewWindow = window.open("", "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=no, width=" + w + ", height=" + h);
 				NewWindow.moveTo(left, top);
 
 
@@ -183,118 +183,108 @@ function start() {
 		}
 
 		checkElement(".available").then((available) => {
-			if (document.getElementById("yolo")) {
-				console.log("Already Loaded");
-			}
-			else {
-				checkElement(".tableHead tbody")
-					.then((tableHead) => {
-						checkElement(".splitViewChatRightPaneData")
-							.then((splitViewChatRightPaneData) => {
-								checkElement(".tableData")
-									.then((tableData) => {
-										checkElement(".gwt-PopupPanel").then((PopupPanel) => {
-											tableData.addEventListener("click", function (event) {
-												try {
-													function getNodeParent(node, search) {
-														let parentNode = undefined;
-														// console.log(`nodeName: ${node.nodeName.toUpperCase()}`);
-														if (node.nodeName.toUpperCase() !== search.toUpperCase() || node.nodeName.toUpperCase() === "BODY") {
-															parentNode = getNodeParent(node.parentNode, search);
-															return parentNode;
-														}
-														else {
-															return node;
-														}
+			checkElement(".tableHead tbody")
+				.then((tableHead) => {
+					checkElement(".splitViewChatRightPaneData")
+						.then((splitViewChatRightPaneData) => {
+							checkElement(".tableData")
+								.then((tableData) => {
+									checkElement(".gwt-PopupPanel").then((PopupPanel) => {
+										tableData.addEventListener("click", function (event) {
+											try {
+												function getNodeParent(node, search) {
+													let parentNode = undefined;
+													// console.log(`nodeName: ${node.nodeName.toUpperCase()}`);
+													if (node.nodeName.toUpperCase() !== search.toUpperCase() || node.nodeName.toUpperCase() === "BODY") {
+														parentNode = getNodeParent(node.parentNode, search);
+														return parentNode;
 													}
-
-													function getModuleName(node) {
-														if (node && node.childNodes && node.childNodes[0]) {
-															let eventName = node.childNodes[0].textContent;
-															// console.log(`ModuleName: ${eventName}`);
-															return eventName;
-														}
-														else {
-															return undefined;
-														}
+													else {
+														return node;
 													}
-
-													function getCallingNode(node) {
-														if (node && node.childNodes && node.childNodes[2]) {
-															let logs = node.childNodes[2].querySelectorAll(".kquery-log-event-container");
-															if (logs && logs.length > 0) {
-																const regex = /(?<=\$\(')(.*?)(?='\)\.on)/gm;
-																let _node = logs[0].title.match(regex);
-																// console.log(`CallingNode: ${_node}`);
-																return _node;
-															}
-														}
-														else {
-															return undefined;
-														}
-													}
-
-													function getCallingType(node) {
-														if (node && node.childNodes && node.childNodes[2]) {
-															let label = node.childNodes[2].querySelector(".gwt-Label");
-															if (label) {
-																// console.log(`CallingType: ${label.textContent}`);
-																return label.textContent;
-															}
-														}
-														else {
-															return undefined;
-														}
-													}
-
-													if (event.target && event.target.parentNode) {
-
-														if(event.target.textContent.includes("Test the request to Ninascript")
-															|| event.target.textContent.includes("View context") ||
-															event.target.textContent.includes("View metadata") || event.target.textContent.includes("has been updated by Ninascript") ){
-															let rootNode = getNodeParent(event.target, "TR");
-															moduleName = getModuleName(rootNode);
-															callingType = getCallingType(rootNode);
-															callingNode = getCallingNode(rootNode);
-
-															if(!callingNode && moduleName){
-																callingNode = moduleName;
-															}
-															if(!callingType){
-																callingType = "Last Context or MetaData";
-															}
-
-															openNewEditor(jsonData, jsonType, moduleName, callingType, callingNode);
-														}
-
-
-
-													}
-												} catch (e) {
-													console.error(e);
 												}
 
-											});
+												function getModuleName(node) {
+													if (node && node.childNodes && node.childNodes[0]) {
+														let eventName = node.childNodes[0].textContent;
+														// console.log(`ModuleName: ${eventName}`);
+														return eventName;
+													}
+													else {
+														return undefined;
+													}
+												}
 
-											new MutationSummary({
-												callback: handleDiscographyChanges,
-												rootNode: document.body,
-												queries: [{
-													element: "div.gwt-PopupPanel"
-												}]
-											});
-											loaded = true;
+												function getCallingNode(node) {
+													if (node && node.childNodes && node.childNodes[2]) {
+														let logs = node.childNodes[2].querySelectorAll(".kquery-log-event-container");
+														if (logs && logs.length > 0) {
+															const regex = /(?<=\$\(')(.*?)(?='\)\.on)/gm;
+															let _node = logs[0].title.match(regex);
+															// console.log(`CallingNode: ${_node}`);
+															return _node;
+														}
+													}
+													else {
+														return undefined;
+													}
+												}
+
+												function getCallingType(node) {
+													if (node && node.childNodes && node.childNodes[2]) {
+														let label = node.childNodes[2].querySelector(".gwt-Label");
+														if (label) {
+															// console.log(`CallingType: ${label.textContent}`);
+															return label.textContent;
+														}
+													}
+													else {
+														return undefined;
+													}
+												}
+
+												if (event.target && event.target.parentNode) {
+
+													if (event.target.textContent.includes("Test the request to Ninascript")
+														|| event.target.textContent.includes("View context") ||
+														event.target.textContent.includes("View metadata") || event.target.textContent.includes("has been updated by Ninascript")) {
+														let rootNode = getNodeParent(event.target, "TR");
+														moduleName = getModuleName(rootNode);
+														callingType = getCallingType(rootNode);
+														callingNode = getCallingNode(rootNode);
+
+														if (!callingNode && moduleName) {
+															callingNode = moduleName;
+														}
+														if (!callingType) {
+															callingType = "Last Context or MetaData";
+														}
+
+														openNewEditor(jsonData, jsonType, moduleName, callingType, callingNode);
+													}
+
+
+												}
+											} catch (e) {
+												console.error(e);
+											}
+
 										});
+
+										new MutationSummary({
+											callback: handleDiscographyChanges,
+											rootNode: document.body,
+											queries: [{
+												element: "div.gwt-PopupPanel"
+											}]
+										});
+										loaded = true;
 									});
-							});
-					});
-			}
+								});
+						});
+				});
 		});
 	}
-
-
-
-
 
 
 }
